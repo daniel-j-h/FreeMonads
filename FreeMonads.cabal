@@ -1,0 +1,38 @@
+name:                FreeMonads
+version:             0.1.0.0
+synopsis:            A Playground for free monads
+-- description:
+homepage:            https://github.com/daniel-j-h/FreeMonads#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Daniel J. Hofmann
+maintainer:          daniel@trvx.org
+copyright:           Daniel J. Hofmann
+category:            Example
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+executable FreeMonads
+  hs-source-dirs:
+    src
+
+  main-is:
+    Main.hs
+
+  default-language:
+    Haskell2010
+
+  ghc-options:
+    -Wall
+
+  default-extensions:
+    NoImplicitPrelude
+    OverloadedStrings
+
+  build-depends:
+    base      >= 4.9  && < 4.10,
+    protolude >= 0.1  && < 0.2,
+    text      >= 1.2  && < 1.3,
+    free      >= 4.12 && < 4.13,
+    mtl       >= 2.2  && < 2.3
