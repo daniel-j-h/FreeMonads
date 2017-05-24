@@ -43,6 +43,7 @@ data Http next
   | Post Url (HttpResponse -> next)
   | Done
 
+
 instance Functor Http where
   fmap f (Get  url next) = Get  url (f . next)
   fmap f (Post url next) = Post url (f . next)
@@ -61,22 +62,22 @@ httpPost url = liftF $ Post url identity
 
 unsafeRunIO :: HttpInteraction a -> IO ()
 unsafeRunIO act = case act of
-  (Free (Get url next)) -> do
+  Free (Get url next) -> do
     putText $ "GET request to " <> show url
-    runIO $ next (Right $ HttpOk "Website")
+    unsafeRunIO $ next (Right $ HttpOk "Website")
 
-  (Free (Post url next)) -> do
+  Free (Post url next) -> do
     putText $ "PUT request to " <> show url
-    runIO $ next (Right $ HttpOk "Submitted")
+    unsafeRunIO $ next (Right $ HttpOk "Submitted")
 
-  (Free (Done)) -> do
+  Free (Done) -> do
     return ()
 
-  (Pure _) -> do
+  Pure _ -> do
     return ()
 
 
-runIO :: forall a. HttpInteraction a -> IO ()
+runIO :: (forall a. HttpInteraction a) -> IO ()
 runIO = unsafeRunIO
 
 
@@ -95,7 +96,7 @@ submitForm url = do
 
 main :: IO ()
 main = do
-  runIO . submitForm $ Url "example.com" 80
+  unsafeRunIO $ submitForm $ Url "example.com" 80
 
 
 -- | Questions
